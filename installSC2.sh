@@ -1,16 +1,23 @@
 #!/bin/bash
 
-if [ -d "/tmp/OSCAR" ]
+if [[ $# == 0 ]]; then
+	instalation_path="/tmp/OSCAR"
+	echo "no instalation path provided, default to $instalation_path"
+else
+	instalation_path=$1
+fi
+
+if [ -d "$instalation_path/StarCraftII" ]
 	then 
 		echo -e "\e[1;32mOSCAR seems to be ready !\e[0m"
 	else
-		mkdir /tmp/OSCAR
-		cd /tmp/OSCAR
+		mkdir -p "$instalation_path"
+		cd "$instalation_path"
 		echo -e "\e[1;32mDownloading StarCraft 2 headless version for Linux\e[0m"
-		wget http://blzdistsc2-a.akamaihd.net/Linux/SC2.3.16.1.zip
+		wget http://blzdistsc2-a.akamaihd.net/Linux/SC2.4.1.2.60604_2018_05_16.zip
 		echo -e "\e[1;32mUncompresse StarCraft 2\e[0m"
-		unzip -P iagreetotheeula SC2.3.16.1.zip
-		rm SC2.3.16.1.zip
+		unzip -P iagreetotheeula SC2.4.1.2.60604_2018_05_16.zip
+		rm SC2.4.1.2.60604_2018_05_16.zip
 		echo -e "\e[1;32mDonwloding Maps and Mini-game\e[0m"
 		cd StarCraftII/Maps
 		wget http://blzdistsc2-a.akamaihd.net/MapPacks/Melee.zip
@@ -29,9 +36,8 @@ if [ -d "/tmp/OSCAR" ]
 fi
 
 echo "set environment variable to StarCraftII intall dir"
-export SC2PATH="/tmp/OSCAR/StarCraftII"
+export SC2PATH="$instalation_path/StarCraftII"
 
-if [ ! -e "~/StarCraftII" ]
-	then
-		ln -s /tmp/OSCAR/StarCraftII ~/StarCraftII
+if [ ! -d "~/StarCraftII" ]; then
+	ln -s "$instalation_path/StarCraftII" "~/StarCraftII"
 fi
